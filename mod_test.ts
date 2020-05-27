@@ -96,11 +96,13 @@ Deno.test("retry shouLd be call until limit", async () => {
       );
     });
   };
+  const assetRetryDuration = startAssetRetryDuration();
   await assertThrowsAsync(
     async () => await retryAsync(cb, defaultOptions),
     Error,
     errorMsg,
   );
+  assetRetryDuration();
   assertEquals(callCount, 5);
 });
 
@@ -122,15 +124,15 @@ Deno.test("retryAsync shouLd be call until success", async () => {
       );
     });
   };
+  const assetRetryDuration = startAssetRetryDuration(expectedCallCount);
   const actualResult = await retry(cb, defaultOptions);
+  assetRetryDuration();
   assertEquals(actualCallCount, expectedCallCount);
   assertEquals(actualResult, expectedResult);
 });
 
 Deno.test("wait should...wait !", async () => {
-  const delay = 250;
-  const start = Date.now();
-  await wait(delay);
-  const done = Date.now();
-  assert(done - start >= delay);
+  const assetRetryDuration = startAssetRetryDuration(1);
+  await wait(defaultOptions.delay);
+  assetRetryDuration();
 });
