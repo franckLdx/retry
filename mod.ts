@@ -11,7 +11,8 @@ export async function retry<T>(
   const wrapped = () =>
     new Promise<T>((resolve, reject) => {
       try {
-        resolve(fn());
+        const result = fn();
+        resolve(result);
       } catch (err) {
         reject(err);
       }
@@ -27,14 +28,14 @@ export async function retry<T>(
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
-  { maxTry, interval: delay }: RetryOptions,
+  { maxTry, delay: delay }: RetryOptions,
 ): Promise<T> {
   try {
     return await fn();
   } catch (err) {
     if (maxTry > 1) {
       await wait(delay);
-      return await retryAsync(fn, { interval: delay, maxTry: maxTry - 1 });
+      return await retryAsync(fn, { delay: delay, maxTry: maxTry - 1 });
     }
     throw err;
   }
@@ -42,11 +43,11 @@ export async function retryAsync<T>(
 
 /** Retry options:
  * @param maxTry: maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown 
- * @param interval: number of miliseconds between each attempt.
+ * @param delay: number of miliseconds between each attempt.
  */
 export interface RetryOptions {
   maxTry: number;
-  interval: number;
+  delay: number;
 }
 
 /** An async function that does nothing during a number of milliseconds */
