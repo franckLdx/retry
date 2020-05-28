@@ -23,8 +23,8 @@ export async function retry<T>(
 /** 
  * Retry an async function until it does not throw an exception.
  *  
- * @param fn: the function to execute
- * @param retryOptions: retry options (@see RetryOptions)
+ * @param fn {()=><T>} the function to execute
+ * @param retryOptions {RetryOptions} retry options
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
@@ -51,6 +51,6 @@ export interface RetryOptions {
 }
 
 /** An async function that does nothing during a number of milliseconds */
-export function wait(duration: number) {
-  return new Promise((resolve) => setTimeout(resolve, duration));
+export function wait(duration: number): Promise<void> {
+  return new Promise<void>((resolve) => setTimeout(resolve, duration));
 }
