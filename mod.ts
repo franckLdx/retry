@@ -1,8 +1,8 @@
 /** 
  * Retry a function until it does not throw an exception.
  *  
- * @param fn: the function to execute
- * @param retryOptions: retry options ({@link RetryOptions})
+ * @param fn {()=><T>} the function to execute
+ * @param retryOptions {RetryOptions} retry options
  */
 export async function retry<T>(
   fn: () => T,
