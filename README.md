@@ -1,5 +1,5 @@
 # retry
-A little retry tool in deno. Ex:
+A simple retry tool for deno. Ex:
 ```typescript
 const result = await retryAsync(
   async ()=> {/* get some data if those data are ready, throw an expection otherwise */}, 
