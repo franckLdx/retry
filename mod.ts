@@ -2,7 +2,7 @@
  * Retry a function until it does not throw an exception.
  *  
  * @param fn the function to execute
- * @param retryOptions {RetryOptions} retry options
+ * @param {RetryOptions} retryOptions retry options
  */
 export async function retry<T>(
   fn: () => T,
@@ -24,7 +24,7 @@ export async function retry<T>(
  * Retry an async function until it does not throw an exception.
  *  
  * @param fn the function to execute
- * @param retryOptions {RetryOptions} retry options
+ * @param {RetryOptions} retryOptions retry options
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
