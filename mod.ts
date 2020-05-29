@@ -2,7 +2,7 @@
  * Retry a function until it does not throw an exception.
  *  
  * @param fn the function to execute
- * @param {RetryOptions} retryOptions retry options
+ * @param retryOptions retry options
  */
 export async function retry<T>(
   fn: () => T,
@@ -23,8 +23,8 @@ export async function retry<T>(
 /** 
  * Retry an async function until it does not throw an exception.
  *  
- * @param fn the function to execute
- * @param {RetryOptions} retryOptions retry options
+ * @param fn the async function to execute
+ * @param retryOptions retry options
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
@@ -43,13 +43,12 @@ export async function retryAsync<T>(
 
 /** 
  * Retry options:
- * @typedef {Object} RetryOptions
- * @property {number} maxTry: maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown 
- * @property {number} delay: number of miliseconds between each attempt.
+ *  - maxTry: maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown 
+ *  - delay: number of miliseconds between each attempt.
  */
 export interface RetryOptions {
-  maxTry: number;
-  delay: number;
+  maxTry: number; // maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown
+  delay: number; //number of miliseconds between each attempt.
 }
 
 /** An async function that does nothing during a number of milliseconds */
