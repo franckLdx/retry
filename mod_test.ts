@@ -1,4 +1,4 @@
-import { retry, retryAsync, wait } from "./mod.ts";
+import { retry, retryAsync } from "./mod.ts";
 import {
   assertEquals,
   assertThrowsAsync,
@@ -129,10 +129,4 @@ Deno.test("retryAsync shouLd be call until success", async () => {
   assetRetryDuration();
   assertEquals(actualCallCount, expectedCallCount);
   assertEquals(actualResult, expectedResult);
-});
-
-Deno.test("wait should...wait !", async () => {
-  const assetRetryDuration = startAssetRetryDuration(1);
-  await wait(defaultOptions.delay);
-  assetRetryDuration();
 });

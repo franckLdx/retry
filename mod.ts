@@ -1,3 +1,6 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
+import { delay as deno_delay } from "https://deno.land/std@0.54.0/async/delay.ts";
+
 /** 
  * Retry a function until it does not throw an exception.
  *  
@@ -28,13 +31,13 @@ export async function retry<T>(
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
-  { maxTry, delay: delay }: RetryOptions,
+  { maxTry, delay }: RetryOptions,
 ): Promise<T> {
   try {
     return await fn();
   } catch (err) {
     if (maxTry > 1) {
-      await wait(delay);
+      await deno_delay(delay);
       return await retryAsync(fn, { delay: delay, maxTry: maxTry - 1 });
     }
     throw err;
@@ -49,9 +52,4 @@ export async function retryAsync<T>(
 export interface RetryOptions {
   maxTry: number; // maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown
   delay: number; //number of miliseconds between each attempt.
-}
-
-/** An async function that does nothing during a number of milliseconds */
-export function wait(duration: number): Promise<void> {
-  return new Promise<void>((resolve) => setTimeout(resolve, duration));
 }

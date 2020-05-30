@@ -21,10 +21,6 @@ the data.
   ```
 Above examples make up to 5 attempts, waiting 100ms between each try.
 
-You can also wait for a number of seconds
-* to wait 1OO ms of milliseconds: <br/><code>await wait(100)</code> 
-
-
 ## API
 * retry<T>(fn<T>, retryOptions): call repeteadly fn until fn does not throw and exception. Stop after retryOptions.maxTry count. Between each call wait retryOptions.delay milliseconds.
 if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise returns fn return value.
