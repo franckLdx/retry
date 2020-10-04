@@ -3,7 +3,7 @@ import {
   assertEquals,
   assertThrowsAsync,
   assert,
-} from "https://deno.land/std@0.53.0/testing/asserts.ts";
+} from "https://deno.land/std@0.73.0/testing/asserts.ts";
 
 const defaultOptions = { maxTry: 5, delay: 250 };
 
