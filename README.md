@@ -10,6 +10,9 @@ This will try 5 times to get the data. If data is not ready after the 5 attempts
 an exception is thrown. If data are obtained, retryAsync stop immediatly and returns
 the data. 
 
+[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/retry) 
+[![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/franckLdx/retry/blob/master/LICENSE) 
+
 ## How to:
 * to retry something: 
   ```typescript
