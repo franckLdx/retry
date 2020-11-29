@@ -1,5 +1,5 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
-import { delay as deno_delay } from "https://deno.land/std@0.74.0/async/delay.ts";
+import { deno_delay } from "./deps.ts";
 
 /** 
  * Retry a function until it does not throw an exception.
