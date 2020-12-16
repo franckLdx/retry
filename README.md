@@ -33,3 +33,6 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
   - delay: delay between each call (in milliseconds).
 
 Note: retry and retryAsync return type if the return type of the given fn.
+
+## Compatilibity
+Use std 0.81.0 (deno 1.6.1) but is is aslo tested with lates deno 1.3.x, deno 1.4.x and deno 1.5.x.
