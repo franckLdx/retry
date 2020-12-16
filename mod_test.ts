@@ -1,9 +1,5 @@
 import { retry, retryAsync } from "./mod.ts";
-import {
-  assertEquals,
-  assertThrowsAsync,
-  assert,
-} from "./dev_deps.ts";
+import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
 
 const defaultOptions = { maxTry: 5, delay: 250 };
 

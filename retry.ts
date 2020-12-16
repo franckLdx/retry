@@ -1,5 +1,5 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
-import { deno_delay, deferred } from "./deps.ts";
+import { deferred, denoDelay } from "./deps.ts";
 
 /** 
  * Retry a function until it does not throw an exception.
@@ -7,7 +7,7 @@ import { deno_delay, deferred } from "./deps.ts";
  * @param fn the function to execute
  * @param retryOptions retry options
  */
-export async function retry<T>(
+export function retry<T>(
   fn: () => T,
   retryOptions: RetryOptions,
 ): Promise<T> {
@@ -20,7 +20,7 @@ export async function retry<T>(
       promise.reject(err);
     }
     return promise;
-  }
+  };
   return retryAsync(wrapped, retryOptions);
 }
 
@@ -38,7 +38,7 @@ export async function retryAsync<T>(
     return await fn();
   } catch (err) {
     if (maxTry > 1) {
-      await deno_delay(delay);
+      await denoDelay(delay);
       return await retryAsync(fn, { delay: delay, maxTry: maxTry - 1 });
     }
     throw err;

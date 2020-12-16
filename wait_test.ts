@@ -1,5 +1,5 @@
 import { TimeoutError, waitUntil } from "./wait.ts";
-import { deferred, deno_delay } from "./deps.ts";
+import { deferred, denoDelay } from "./deps.ts";
 import { assertEquals, assertThrowsAsync } from "./dev_deps.ts";
 
 Deno.test("wait should return function return code", async () => {
@@ -8,7 +8,7 @@ Deno.test("wait should return function return code", async () => {
   const fn = async () => result;
   const actualResult = await waitUntil(fn, delay);
   assertEquals(actualResult, result);
-  await deno_delay(delay);
+  await denoDelay(delay);
 });
 
 Deno.test("wait should throw function exception", async () => {
@@ -22,7 +22,7 @@ Deno.test("wait should throw function exception", async () => {
     Error,
     errorMsg,
   );
-  await deno_delay(delay);
+  await denoDelay(delay);
 });
 
 Deno.test("wait should throw TimeoutError exception", async () => {
@@ -36,7 +36,7 @@ Deno.test("wait should throw TimeoutError exception", async () => {
     "function did not complete within allowed time",
   );
   assertEquals((error as TimeoutError).isTimeout, true);
-  await deno_delay(delay);
+  await denoDelay(delay);
 });
 
 Deno.test("wait should throw custom Error exception", async () => {
@@ -51,5 +51,5 @@ Deno.test("wait should throw custom Error exception", async () => {
     errorMsg,
   );
   assertEquals((error as any).isTimeout, undefined);
-  await deno_delay(delay);
+  await denoDelay(delay);
 });
