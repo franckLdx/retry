@@ -1,6 +1,6 @@
 import { TimeoutError, waitUntil, waitUntilAsync } from "./wait.ts";
-import { deferred, denoDelay } from "./deps.ts";
-import { assertEquals, assertThrowsAsync } from "./dev_deps.ts";
+import { deferred, denoDelay } from "../deps.ts";
+import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
 
 Deno.test("waitAsync return function return code", async () => {
   const delay = 1000;

@@ -73,7 +73,8 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
   (error as any).isTimeout
 ```
 In case of timeout fn is still executing. It is advise to add a mean to abort it.
-Note: retry, retryAsync and waitUntil return type is the return type of the given fn.
+Note: retry, retryAsync, waitUntil and waitUntilAsync return type is the return type of the given fn.
+* setDefaultRetryOptions and getDefaultRetryOptions respectively set/get the retry options apply by default. When not set default retry options are delay: 250 and maxTry: 240 (a test eveyr 250 ms during one minue). 
 
 ## Compatilibity
 Use std 0.81.0 (deno 1.6.1) but is is aslo tested with lates deno 1.3.x, deno 1.4.x and deno 1.5.x.

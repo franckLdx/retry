@@ -1,51 +1,8 @@
-import {
-  getDefaulRetryOptions,
-  retry,
-  retryAsync,
-  RetryOptions,
-  setDefaulRetryOptions,
-} from "./mod.ts";
-import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
+import { assert, assertEquals, assertThrowsAsync } from "../dev_deps.ts";
+import type { RetryOptions } from "./mod.ts";
+import { retry, retryAsync, setDefaultRetryOptions } from "./mod.ts";
 
-const defaultRetryOptions = setDefaulRetryOptions({ maxTry: 5, delay: 250 });
-
-Deno.test("defaultOptions can be changed", async () => {
-  const initialOptions = getDefaulRetryOptions();
-  try {
-    const refOptions: RetryOptions = { maxTry: 10, delay: 10 };
-    const defaultOptions = setDefaulRetryOptions(refOptions);
-    assertEquals(defaultOptions, refOptions);
-    assertEquals(getDefaulRetryOptions(), refOptions);
-  } finally {
-    setDefaulRetryOptions(initialOptions);
-  }
-});
-
-Deno.test("defaultOptions: maxTry can be changed", async () => {
-  const initialOptions = getDefaulRetryOptions();
-  try {
-    const newMaxTry = initialOptions.maxTry * 2;
-    const expectedOptions = { ...initialOptions, maxTry: newMaxTry };
-    const defaultOptions = setDefaulRetryOptions({ maxTry: newMaxTry });
-    assertEquals(defaultOptions, expectedOptions);
-    assertEquals(getDefaulRetryOptions(), expectedOptions);
-  } finally {
-    setDefaulRetryOptions(initialOptions);
-  }
-});
-
-Deno.test("defaultOptions: delay can be changed", async () => {
-  const initialOptions = getDefaulRetryOptions();
-  try {
-    const newdelay = initialOptions.delay * 2;
-    const expectedOptions = { ...initialOptions, delay: newdelay };
-    const defaultOptions = setDefaulRetryOptions({ delay: newdelay });
-    assertEquals(defaultOptions, expectedOptions);
-    assertEquals(getDefaulRetryOptions(), expectedOptions);
-  } finally {
-    setDefaulRetryOptions(initialOptions);
-  }
-});
+const defaultRetryOptions = setDefaultRetryOptions({ maxTry: 5, delay: 250 });
 
 const startAssetRetryDuration = (
   { maxTry, delay }: RetryOptions = defaultRetryOptions,

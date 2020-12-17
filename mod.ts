@@ -1,11 +1,11 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 
 export {
-  getDefaulRetryOptions,
+  getDefaultRetryOptions,
   retry,
   retryAsync,
-  setDefaulRetryOptions,
-} from "./retry.ts";
-export type { RetryOptions } from "./retry.ts";
+  setDefaultRetryOptions,
+} from "./retry/mod.ts";
+export type { RetryOptions } from "./retry/mod.ts";
 
-export { TimeoutError, waitUntilAsync } from "./wait.ts";
+export { TimeoutError, waitUntil, waitUntilAsync } from "./wait/mod.ts";

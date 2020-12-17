@@ -1,6 +1,6 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
-import { denoDelay } from "./deps.ts";
-import { asyncDecorator } from "./misc.ts";
+import { denoDelay } from "../deps.ts";
+import { asyncDecorator } from "../misc.ts";
 
 export class TimeoutError extends Error {
   isTimeout = true;
