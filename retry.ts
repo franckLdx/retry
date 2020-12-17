@@ -1,5 +1,6 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
-import { deferred, denoDelay } from "./deps.ts";
+import { denoDelay } from "./deps.ts";
+import { asyncDecorator } from "./misc.ts";
 
 /** 
  * Retry a function until it does not throw an exception.
@@ -11,17 +12,8 @@ export function retry<T>(
   fn: () => T,
   retryOptions: RetryOptions,
 ): Promise<T> {
-  const wrapped = (): Promise<T> => {
-    const promise = deferred<T>();
-    try {
-      const result = fn();
-      promise.resolve(result);
-    } catch (err) {
-      promise.reject(err);
-    }
-    return promise;
-  };
-  return retryAsync(wrapped, retryOptions);
+  const fnAsync = asyncDecorator(fn);
+  return retryAsync(fnAsync, retryOptions);
 }
 
 /** 

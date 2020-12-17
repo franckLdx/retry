@@ -3,4 +3,4 @@
 export { retry, retryAsync } from "./retry.ts";
 export type { RetryOptions } from "./retry.ts";
 
-export { TimeoutError, waitUntil } from "./wait.ts";
+export { TimeoutError, waitUntilAsync } from "./wait.ts";

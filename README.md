@@ -52,12 +52,15 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
 * retryOptions:
   - maxTry maximum calls to fn.
   - delay: delay between each call (in milliseconds).
-* waitUntil<T>(fn<T>, delay, error?): fn is an asynchronous function. waitUntil calss it once. If fn complete within the delay (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
+* waitUntil<T>(fn<T>, delay, error?): waitUntil call asynchronously fn once. If fn complete within the delay (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
+* waitUntilAsync<T>(fn<T>, delay, error?): same as waitUntil, except fn is an asynchronous function.
 * TimeoutError: an error thrown by waitUntil. It has a property isTimeout set to true: therefore there's two means to check os fn timeout:
 ```typescript
   error instanceof TimeoutError
+  or
   (error as any).isTimeout
 ```
+In case of timeout fn is still executing. It is advise to add a mean to abort it.
 Note: retry, retryAsync and waitUntil return type is the return type of the given fn.
 
 ## Compatilibity
