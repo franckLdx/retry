@@ -10,7 +10,7 @@ import { asyncDecorator } from "./misc.ts";
  */
 export function retry<T>(
   fn: () => T,
-  retryOptions: RetryOptions,
+  retryOptions?: RetryOptions,
 ): Promise<T> {
   const fnAsync = asyncDecorator(fn);
   return retryAsync(fnAsync, retryOptions);
@@ -24,7 +24,7 @@ export function retry<T>(
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
-  { maxTry, delay }: RetryOptions,
+  { maxTry, delay }: RetryOptions = defaulRetryOptions,
 ): Promise<T> {
   try {
     return await fn();
@@ -44,5 +44,23 @@ export async function retryAsync<T>(
  */
 export interface RetryOptions {
   maxTry: number; // maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown
-  delay: number; //number of miliseconds between each attempt.
+  delay: number; // number of miliseconds between each attempt.
+}
+
+let defaulRetryOptions: RetryOptions = {
+  delay: 250,
+  maxTry: 250 * 4 * 60,
+};
+
+/** Set default retry options */
+export function setDefaulRetryOptions(
+  retryOptions: Partial<RetryOptions>,
+): RetryOptions {
+  defaulRetryOptions = { ...defaulRetryOptions, ...retryOptions };
+  return getDefaulRetryOptions();
+}
+
+/** Returns the current retry options. To change default options, use setDefaulRetryOptions: do not try to modify this object */
+export function getDefaulRetryOptions(): Readonly<RetryOptions> {
+  return { ...defaulRetryOptions };
 }

@@ -1,6 +1,6 @@
 # retry
 A simple retry/wait tool for deno. 
-Can re-call a function until a sucess, or execute a function with a timeout 
+Can re-call a function until a sucess, or bind a timeout to a function 
 Ex:
 ```typescript
 const result = await retryAsync(
@@ -55,7 +55,7 @@ Above examples make up to 5 attempts, waiting 100ms between each try.
     }
   }
   ```
-In the Above example fn has 10 seconds to complete, otherwhise an exception is thrown.
+Above examples fn has 10 seconds to complete, otherwhise an exception is thrown.
 
 ## API
 * retry<T>(fn<T>, retryOptions): call repeteadly fn until fn does not throw and exception. Stop after retryOptions.maxTry count. Between each call wait retryOptions.delay milliseconds.

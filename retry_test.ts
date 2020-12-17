@@ -1,11 +1,57 @@
-import { retry, retryAsync } from "./mod.ts";
+import {
+  getDefaulRetryOptions,
+  retry,
+  retryAsync,
+  RetryOptions,
+  setDefaulRetryOptions,
+} from "./mod.ts";
 import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
 
-const defaultOptions = { maxTry: 5, delay: 250 };
+const defaultRetryOptions = setDefaulRetryOptions({ maxTry: 5, delay: 250 });
 
-const startAssetRetryDuration = (maxTry = defaultOptions.maxTry) => {
+Deno.test("defaultOptions can be changed", async () => {
+  const initialOptions = getDefaulRetryOptions();
+  try {
+    const refOptions: RetryOptions = { maxTry: 10, delay: 10 };
+    const defaultOptions = setDefaulRetryOptions(refOptions);
+    assertEquals(defaultOptions, refOptions);
+    assertEquals(getDefaulRetryOptions(), refOptions);
+  } finally {
+    setDefaulRetryOptions(initialOptions);
+  }
+});
+
+Deno.test("defaultOptions: maxTry can be changed", async () => {
+  const initialOptions = getDefaulRetryOptions();
+  try {
+    const newMaxTry = initialOptions.maxTry * 2;
+    const expectedOptions = { ...initialOptions, maxTry: newMaxTry };
+    const defaultOptions = setDefaulRetryOptions({ maxTry: newMaxTry });
+    assertEquals(defaultOptions, expectedOptions);
+    assertEquals(getDefaulRetryOptions(), expectedOptions);
+  } finally {
+    setDefaulRetryOptions(initialOptions);
+  }
+});
+
+Deno.test("defaultOptions: delay can be changed", async () => {
+  const initialOptions = getDefaulRetryOptions();
+  try {
+    const newdelay = initialOptions.delay * 2;
+    const expectedOptions = { ...initialOptions, delay: newdelay };
+    const defaultOptions = setDefaulRetryOptions({ delay: newdelay });
+    assertEquals(defaultOptions, expectedOptions);
+    assertEquals(getDefaulRetryOptions(), expectedOptions);
+  } finally {
+    setDefaulRetryOptions(initialOptions);
+  }
+});
+
+const startAssetRetryDuration = (
+  { maxTry, delay }: RetryOptions = defaultRetryOptions,
+) => {
   const start = Date.now();
-  const expectedDuration = (maxTry - 1) * defaultOptions.delay;
+  const expectedDuration = (maxTry - 1) * delay;
   return () => {
     const stop = Date.now();
     const actualDuration = stop - start;
@@ -23,7 +69,7 @@ Deno.test("retry shouLd work immediatly", async () => {
     callCount++;
     return expectedResult;
   };
-  const actualResult = await retry(cb, defaultOptions);
+  const actualResult = await retry(cb);
   assertEquals(callCount, 1);
   assertEquals(actualResult, expectedResult);
 });
@@ -37,7 +83,28 @@ Deno.test("retry shouLd be call until limit", async () => {
   };
   const assertActualDuration = startAssetRetryDuration();
   await assertThrowsAsync(
-    async () => await retry(cb, defaultOptions),
+    async () => await retry(cb),
+    Error,
+    errorMsg,
+  );
+  assertActualDuration();
+  assertEquals(callCount, 5);
+});
+
+Deno.test("retry shouLd be call until custom limit", async () => {
+  const retryOptions: RetryOptions = {
+    maxTry: 5,
+    delay: 10,
+  };
+  const errorMsg = "BOOM";
+  let callCount = 0;
+  const cb = () => {
+    callCount++;
+    throw new Error(errorMsg);
+  };
+  const assertActualDuration = startAssetRetryDuration(retryOptions);
+  await assertThrowsAsync(
+    async () => await retry(cb),
     Error,
     errorMsg,
   );
@@ -56,8 +123,10 @@ Deno.test("retry shouLd be call until success", async () => {
     }
     return expectedResult;
   };
-  const assertActualDuration = startAssetRetryDuration(expectedCallCount);
-  const actualResult = await retry(cb, defaultOptions);
+  const assertActualDuration = startAssetRetryDuration(
+    { ...defaultRetryOptions, maxTry: expectedCallCount },
+  );
+  const actualResult = await retry(cb);
   assertActualDuration();
   assertEquals(actualCallCount, expectedCallCount);
   assertEquals(actualResult, expectedResult);
@@ -75,7 +144,7 @@ Deno.test("retryAsync shouLd work immediatly", async () => {
       )
     );
   };
-  const actualResult = await retryAsync(cb, defaultOptions);
+  const actualResult = await retryAsync(cb);
   assertEquals(callCount, 1);
   assertEquals(actualResult, expectedResult);
 });
@@ -94,7 +163,7 @@ Deno.test("retry shouLd be call until limit", async () => {
   };
   const assetRetryDuration = startAssetRetryDuration();
   await assertThrowsAsync(
-    async () => await retryAsync(cb, defaultOptions),
+    async () => await retryAsync(cb),
     Error,
     errorMsg,
   );
@@ -120,8 +189,10 @@ Deno.test("retryAsync shouLd be call until success", async () => {
       );
     });
   };
-  const assetRetryDuration = startAssetRetryDuration(expectedCallCount);
-  const actualResult = await retry(cb, defaultOptions);
+  const assetRetryDuration = startAssetRetryDuration(
+    { ...defaultRetryOptions, maxTry: expectedCallCount },
+  );
+  const actualResult = await retry(cb);
   assetRetryDuration();
   assertEquals(actualCallCount, expectedCallCount);
   assertEquals(actualResult, expectedResult);
