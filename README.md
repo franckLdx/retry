@@ -13,7 +13,7 @@ an exception is thrown. If data are obtained, retryAsync stop immediatly and ret
 the data. 
 
 ```typescript
-const result = await waitUntil(fn, 10000);
+const result = await waitUntilAsync(fn, 10000);
 ```
 This wait fn to complete withint 10 seconds. If fn complete on a sucess, return fn return value. If fn complete on an error, throw fn's error.
 If fn does not complete within 10 seconds, throws a TimeoutError.
@@ -31,10 +31,22 @@ If fn does not complete within 10 seconds, throws a TimeoutError.
   const result = await retryAsync(async ()=> {/* do something */}, {delay:100,maxTry:5})
   ```
 Above examples make up to 5 attempts, waiting 100ms between each try.
-* to set a timeout on something async : 
+* to set a timeout: 
   ```typescript
   try {
     const result = await waitUntil(async ()=> {/* do something */}, 10000);
+  } catch (err) {
+    if (error instanceof TimeoutError) {
+      // fn does not complete
+    } else {
+      // fn throws an exception
+    }
+  }
+  ```
+  * to set a timeout on something async : 
+  ```typescript
+  try {
+    const result = await waitUntilAsync(async ()=> {/* do something */}, 10000);
   } catch (err) {
     if (error instanceof TimeoutError) {
       // fn does not complete
@@ -54,7 +66,7 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
   - delay: delay between each call (in milliseconds).
 * waitUntil<T>(fn<T>, delay, error?): waitUntil call asynchronously fn once. If fn complete within the delay (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
 * waitUntilAsync<T>(fn<T>, delay, error?): same as waitUntil, except fn is an asynchronous function.
-* TimeoutError: an error thrown by waitUntil. It has a property isTimeout set to true: therefore there's two means to check os fn timeout:
+* TimeoutError: an error thrown by waitUntil and waitUntilAsync. It has a property isTimeout set to true: therefore there's two means to check os fn timeout:
 ```typescript
   error instanceof TimeoutError
   or
