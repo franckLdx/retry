@@ -1,4 +1,4 @@
-import { TimeoutError, waitUntil, waitUntilAsync } from "./wait.ts";
+import { TimeoutError, waitUntil, waitUntilAsync } from "./mod.ts";
 import { deferred, denoDelay } from "../deps.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
 

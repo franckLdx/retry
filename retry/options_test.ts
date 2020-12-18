@@ -8,10 +8,10 @@ import { assertEquals } from "../dev_deps.ts";
 Deno.test("defaultOptions can be changed", async () => {
   const initialOptions = getDefaultRetryOptions();
   try {
-    const refOptions: RetryOptions = { maxTry: 10, delay: 10 };
-    const defaultOptions = setDefaultRetryOptions(refOptions);
-    assertEquals(defaultOptions, refOptions);
-    assertEquals(getDefaultRetryOptions(), refOptions);
+    const expectedOptions: RetryOptions = { maxTry: 10, delay: 10 };
+    const defaultOptions = setDefaultRetryOptions(expectedOptions);
+    assertEquals(defaultOptions, expectedOptions);
+    assertEquals(getDefaultRetryOptions(), expectedOptions);
   } finally {
     setDefaultRetryOptions(initialOptions);
   }
