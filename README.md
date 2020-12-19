@@ -1,22 +1,6 @@
 # retry
 A simple retry/wait tool for deno. 
 Can re-call a function until a sucess, or bind a timeout to a function 
-Ex:
-```typescript
-const result = await retryAsync(
-  async ()=> {/* get some data if those data are ready, throw an expection otherwise */}, 
-  { delay: 100, maxTry: 5 }
-)
-```
-This will try 5 times to get the data. If data is not ready after the 5 attempts,
-an exception is thrown. If data are obtained, retryAsync stop immediatly and returns
-the data. 
-
-```typescript
-const result = await waitUntilAsync(fn, 10000);
-```
-This wait fn to complete withint 10 seconds. If fn complete on a sucess, return fn return value. If fn complete on an error, throw fn's error.
-If fn does not complete within 10 seconds, throws a TimeoutError.
 
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/retry) 
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/franckLdx/retry/blob/master/LICENSE) 
@@ -29,6 +13,18 @@ If fn does not complete within 10 seconds, throws a TimeoutError.
 * to retry something async : 
   ```typescript
   const result = await retryAsync(async ()=> {/* do something */}, {delay:100,maxTry:5})
+  ```
+* Need to call a function at multiple place with same retryOptions ? Use decorators:
+  ```typescript
+  const fn = (title: string, count:number) => return `${count}. ${title}`; 
+  const decoratedFn = retryDecorator(fn, { delay:100, maxTry:5 });
+  const title1 = await decoratedFn("Intro", 1);
+  const title2 = await decoratedFn("A chapter", 2);
+
+  const fn = async (name: string): Promise<any> => { /* something async */ }; 
+  const decoratedFn = retryAsyncDecorator(fn, {delay:100,maxTry:5});
+  const result1 = await decoratedFn("John");
+  const result2 = await decoratedFn("Doe");
   ```
 Above examples make up to 5 attempts, waiting 100ms between each try.
 * to set a timeout: 
@@ -56,6 +52,19 @@ Above examples make up to 5 attempts, waiting 100ms between each try.
     }
   }
   ```
+* Need to call a function at multiple place with same durations ? Use decorators:
+```typescript
+  const fn = (title: string, count:number) => /* a long task */; 
+  const decoratedFn = waitUntilDecorator(fn, { delay:100, maxTry:5 });
+  const title1 = await decoratedFn("Intro", 1);
+  const title2 = await decoratedFn("A chapter", 2);
+
+  const fn = async (name: string): Promise<any> => { /* a long task */ }; 
+  const decoratedFn = waitUntilAsyncDecorator(fn, {delay:100,maxTry:5});
+  const result1 = await decoratedFn("John");
+  const result2 = await decoratedFn("Doe");
+```
+
 Above examples fn has 10 seconds to complete, otherwhise an exception is thrown.
 
 
