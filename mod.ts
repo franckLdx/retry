@@ -15,4 +15,6 @@ export {
   TimeoutError,
   waitUntil,
   waitUntilAsync,
+  waitUntilAsyncDecorator,
+  waitUntilDecorator,
 } from "./wait/mod.ts";

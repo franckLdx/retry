@@ -7,6 +7,7 @@ export class TimeoutError extends Error {
   isTimeout = true;
 }
 
+
 /** 
  * wait for a function to complete within a givne duration or throw an exception.
  *  
