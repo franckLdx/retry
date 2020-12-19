@@ -5,7 +5,11 @@ import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
 Deno.test("waitAsync return function return code", async () => {
   const delay = 1000;
   const result = Symbol("OK");
-  const fn = async () => result;
+  const fn = () => {
+    const p = deferred<typeof result>();
+    p.resolve(result);
+    return p;
+  };
   const actualResult = await waitUntilAsync(fn, delay);
   assertEquals(actualResult, result);
   await denoDelay(delay);
@@ -14,7 +18,7 @@ Deno.test("waitAsync return function return code", async () => {
 Deno.test("waitAsync throw function exception", async () => {
   const delay = 1000;
   const errorMsg = "BOOM";
-  const fn = async () => {
+  const fn = () => {
     throw new Error(errorMsg);
   };
   await assertThrowsAsync(
@@ -27,7 +31,7 @@ Deno.test("waitAsync throw function exception", async () => {
 
 Deno.test("waitAsync throw TimeoutError exception", async () => {
   const delay = 1000;
-  const fn = async () => {
+  const fn = () => {
     return deferred();
   };
   const error = await assertThrowsAsync(
@@ -41,7 +45,7 @@ Deno.test("waitAsync throw TimeoutError exception", async () => {
 
 Deno.test("waitAsync throw custom Error exception", async () => {
   const delay = 1000;
-  const fn = async () => {
+  const fn = () => {
     return deferred();
   };
   const errorMsg = "BOOM";
@@ -50,6 +54,7 @@ Deno.test("waitAsync throw custom Error exception", async () => {
     Error,
     errorMsg,
   );
+  // deno-lint-ignore no-explicit-any
   assertEquals((error as any).isTimeout, undefined);
   await denoDelay(delay);
 });
@@ -102,6 +107,7 @@ Deno.test("wait throw custom Error exception", async () => {
     Error,
     errorMsg,
   );
+  // deno-lint-ignore no-explicit-any
   assertEquals((error as any).isTimeout, undefined);
   await denoDelay(delay);
 });

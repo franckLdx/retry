@@ -92,7 +92,7 @@ Deno.test("retry shouLd be call until success", async () => {
 Deno.test("retryAsync shouLd work immediatly", async () => {
   const expectedResult = 9856720325867;
   let callCount = 0;
-  const cb = async () => {
+  const cb = () => {
     callCount++;
     return new Promise((resolve) =>
       setTimeout(
@@ -109,7 +109,7 @@ Deno.test("retryAsync shouLd work immediatly", async () => {
 Deno.test("retry shouLd be call until limit", async () => {
   const errorMsg = "BOOM";
   let callCount = 0;
-  const cb = async () => {
+  const cb = () => {
     callCount++;
     return new Promise<void>((_, reject) => {
       setTimeout(
@@ -132,7 +132,7 @@ Deno.test("retryAsync shouLd be call until success", async () => {
   const expectedResult = "youpi";
   const expectedCallCount = 4;
   let actualCallCount = 0;
-  const cb = async () => {
+  const cb = () => {
     actualCallCount++;
     return new Promise((resolve, reject) => {
       setTimeout(

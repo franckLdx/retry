@@ -1,4 +1,5 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
+import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { denoDelay } from "../deps.ts";
 import { asyncDecorator } from "../misc.ts";
 import { defaultRetryOptions, RetryOptions } from "./options.ts";

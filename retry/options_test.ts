@@ -5,7 +5,7 @@ import {
 } from "./mod.ts";
 import { assertEquals } from "../dev_deps.ts";
 
-Deno.test("defaultOptions can be changed", async () => {
+Deno.test("defaultOptions can be changed", () => {
   const initialOptions = getDefaultRetryOptions();
   try {
     const expectedOptions: RetryOptions = { maxTry: 10, delay: 10 };
@@ -17,7 +17,7 @@ Deno.test("defaultOptions can be changed", async () => {
   }
 });
 
-Deno.test("defaultOptions: maxTry can be changed", async () => {
+Deno.test("defaultOptions: maxTry can be changed", () => {
   const initialOptions = getDefaultRetryOptions();
   try {
     const newMaxTry = initialOptions.maxTry * 2;
@@ -30,7 +30,7 @@ Deno.test("defaultOptions: maxTry can be changed", async () => {
   }
 });
 
-Deno.test("defaultOptions: delay can be changed", async () => {
+Deno.test("defaultOptions: delay can be changed", () => {
   const initialOptions = getDefaultRetryOptions();
   try {
     const newdelay = initialOptions.delay * 2;
