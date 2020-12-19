@@ -4,6 +4,7 @@ export {
   getDefaultRetryOptions,
   retry,
   retryAsync,
+  retryAsyncDecorator,
   setDefaultRetryOptions,
 } from "./retry/mod.ts";
 export type { RetryOptions } from "./retry/mod.ts";
