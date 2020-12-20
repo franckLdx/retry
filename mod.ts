@@ -1,20 +1,21 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 
+export { retry, retryAsync } from "./retry/retry.ts";
 export {
   getDefaultRetryOptions,
-  retry,
-  retryAsync,
-  retryAsyncDecorator,
   setDefaultRetryOptions,
-} from "./retry/mod.ts";
-export type { RetryOptions } from "./retry/mod.ts";
+} from "./retry/options.ts";
+export type { RetryOptions } from "./retry/options.ts";
+export { retryAsyncDecorator, retryDecorator } from "./retry/decorator.ts";
 
 export {
-  getDefaultDuration,
-  setDefaultDuration,
+  isTimeoutError,
   TimeoutError,
   waitUntil,
   waitUntilAsync,
+} from "./wait/wait.ts";
+export { getDefaultDuration, setDefaultDuration } from "./wait/options.ts";
+export {
   waitUntilAsyncDecorator,
   waitUntilDecorator,
-} from "./wait/mod.ts";
+} from "./wait/decorators.ts";

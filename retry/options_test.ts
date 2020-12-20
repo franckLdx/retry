@@ -1,8 +1,5 @@
-import {
-  getDefaultRetryOptions,
-  RetryOptions,
-  setDefaultRetryOptions,
-} from "./mod.ts";
+import { getDefaultRetryOptions, setDefaultRetryOptions } from "./options.ts";
+import type { RetryOptions } from "./options.ts";
 import { assertEquals } from "../dev_deps.ts";
 
 Deno.test({

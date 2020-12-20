@@ -1,4 +1,4 @@
-import { getDefaultDuration, setDefaultDuration } from "./mod.ts";
+import { getDefaultDuration, setDefaultDuration } from "./options.ts";
 import { assertEquals } from "../dev_deps.ts";
 
 Deno.test({

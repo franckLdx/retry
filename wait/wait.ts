@@ -17,7 +17,7 @@ export function isTimeoutError(error: Error): error is TimeoutError {
  *  
  * @param fn the async function to execute
  * @param duration timeout in milliseconds
- * @param [error] cumstion error to throw when fn duration exceeded duration. If not provided a TimeoutError is thrown.
+ * @param [error] custom error to throw when fn duration exceeded duration. If not provided a TimeoutError is thrown.
  */
 export async function waitUntilAsync<T>(
   fn: () => Promise<T>,
@@ -42,7 +42,7 @@ export async function waitUntilAsync<T>(
  *  
  * @param fn the function to execute
  * @param duration timeout in milliseconds
- * @param [error] cumstion error to throw when fn duration exceeded duration. If not provided a TimeoutError is thrown.
+ * @param [error] custom error to throw when fn duration exceeded duration. If not provided a TimeoutError is thrown.
  */
 export async function waitUntil<T>(
   fn: () => T,

@@ -1,7 +1,8 @@
-import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
+import { deferred } from "../deps.ts";
 import { assert, assertEquals, assertThrowsAsync } from "../dev_deps.ts";
-import type { RetryOptions } from "./mod.ts";
-import { retry, retryAsync, setDefaultRetryOptions } from "./mod.ts";
+import { retry, retryAsync } from "./retry.ts";
+import { setDefaultRetryOptions } from "./options.ts";
+import type { RetryOptions } from "./options.ts";
 
 const defaultRetryOptions = setDefaultRetryOptions({ maxTry: 5, delay: 250 });
 
