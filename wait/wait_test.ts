@@ -1,6 +1,7 @@
 import { TimeoutError, waitUntil, waitUntilAsync } from "./mod.ts";
 import { deferred, denoDelay } from "../deps.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
+import { isTimeoutError } from "./wait.ts";
 
 Deno.test({
   name: "waitAsync return function return code",
@@ -133,5 +134,21 @@ Deno.test({
     // deno-lint-ignore no-explicit-any
     assertEquals((error as any).isTimeout, undefined);
     await denoDelay(delay);
+  },
+});
+
+Deno.test({
+  name: "isTimeoutError should return true for timeout error",
+  fn: () => {
+    const error = new TimeoutError("bla bla bla");
+    assertEquals(isTimeoutError(error), true);
+  },
+});
+
+Deno.test({
+  name: "isTimeoutError should return false for non timeout error",
+  fn: () => {
+    const error = new Error("bla bla bla");
+    assertEquals(isTimeoutError(error), false);
   },
 });

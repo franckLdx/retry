@@ -6,7 +6,6 @@ import { denoDelay } from "../deps.ts";
 
 Deno.test({
   name: "waitUntilAsyncDecorator should execute the function",
-
   fn: async () => {
     const timeout = 100;
     const fn = (msg: string, count: number): Promise<string> => {
@@ -22,18 +21,17 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilAsyncDecorator should throw the function error",
-
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";
-    const fn = (msg: string, count: number): Promise<string> => {
+    const fn = (): Promise<string> => {
       const promise = deferred<string>();
       promise.reject(new Error(errorMsg));
       return promise;
     };
     const decoratedFn = waitUntilAsyncDecorator(fn, timeout);
     await assertThrowsAsync(
-      async () => await decoratedFn("The answer is", 42),
+      async () => await decoratedFn(),
       Error,
       errorMsg,
     );
@@ -43,7 +41,6 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilAsyncDecorator should throw an error in case of timeout",
-
   fn: async () => {
     const timeout = 100;
     const fn = (msg: string, count: number): Promise<string> => {
@@ -65,7 +62,6 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilAsyncDecorator should throw a cutom error in case of timeout",
-
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";
@@ -94,7 +90,6 @@ Deno.test({
 // ---
 Deno.test({
   name: "waitUntilDecorator should execute the function",
-
   fn: async () => {
     const timeout = 100;
     const fn = (msg: string, count: number): string => {
@@ -108,7 +103,6 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilDecorator should throw the function error",
-
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";
@@ -127,7 +121,6 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilDecorator should throw an error in case of timeout",
-
   fn: async () => {
     const timeout = 1;
     const fn = (msg: string, count: number): Promise<string> => {
@@ -145,7 +138,6 @@ Deno.test({
 
 Deno.test({
   name: "waitUntilDecorator should throw a cutom error in case of timeout",
-
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";

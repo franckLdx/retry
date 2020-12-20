@@ -32,7 +32,7 @@ Above examples make up to 5 attempts, waiting 100ms between each try.
   try {
     const result = await waitUntil(async ()=> {/* do something */}, 10000);
   } catch (err) {
-    if (error instanceof TimeoutError) {
+    if (isTimeoutError(error)) {
       // fn does not complete within 10 seconds
     } else {
       // fn throws an exception
@@ -45,7 +45,7 @@ Above examples make up to 5 attempts, waiting 100ms between each try.
   try {
     const result = await waitUntilAsync(async ()=> {/* do something */}, 10000);
   } catch (err) {
-    if (error instanceof TimeoutError) {
+    if (isTimeoutError(error)) {
       // fn does not complete within 10 seconds
     } else {
       // fn throws an exception
@@ -87,18 +87,17 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
 ### Wait familly
 * `waitUntil<T>(fn<T>, duration?, error?)`: waitUntil call asynchronously fn once. If fn complete within the duration (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
 * `waitUntilAsync<T>(fn<T>, duration?, error?)`: same as waitUntil, except fn is an asynchronous function.
-* TimeoutError: an error thrown by waitUntil and waitUntilAsync. It has a property isTimeout set to true: therefore there's two means to check os fn timeout:
+* TimeoutError: an error thrown by waitUntil and waitUntilAsync. It comse with a isTimeoutError type guard:
 ```typescript
-  error instanceof TimeoutError
-  or
-  (error as any).isTimeout
+  if (isTimeoutError(error)) {
+    // fn does not complete within 10 seconds
+  }
 ```
 In case of timeout fn is still executing. It is advise to add a mean to abort it.
 * When duration is not provided, the default one is applyed. The default default is 60000ms.
 * `setDefaultDuration(duration: number)`: change the default duration.
 * `getDefaultDuration()`: returns the current default duration.
 
-
 ---
 ## Compatilibity
-Use std 0.81.0 (deno 1.6.1) but is is aslo tested with lates deno 1.3.x, deno 1.4.x and deno 1.5.x.
+Use std 0.81.0 (deno 1.6.1) but is is aslo tested with lates deno 1.3.x, 1.4.x and 1.5.x.
