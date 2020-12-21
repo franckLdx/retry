@@ -61,7 +61,8 @@ Deno.test({
 });
 
 Deno.test({
-  name: "waitUntilAsyncDecorator should throw a cutom error in case of timeout",
+  name:
+    "waitUntilAsyncDecorator should throw a custom error in case of timeout",
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";
@@ -137,7 +138,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "waitUntilDecorator should throw a cutom error in case of timeout",
+  name: "waitUntilDecorator should throw a custom error in case of timeout",
   fn: async () => {
     const timeout = 100;
     const errorMsg = "BOOM";
