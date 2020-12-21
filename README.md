@@ -82,7 +82,7 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
 ### Wait familly
 * `waitUntil<T>(fn<T>, duration?, error?)`: waitUntil call asynchronously fn once. If fn complete within the duration (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
 * `waitUntilAsync<T>(fn<T>, duration?, error?)`: same as waitUntil, except fn is an asynchronous function.
-* TimeoutError: an error thrown by waitUntil and waitUntilAsync. It comse with a isTimeoutError type guard:
+* TimeoutError: an error thrown by waitUntil and waitUntilAsync. It comes with a isTimeoutError type guard:
 ```typescript
   if (isTimeoutError(error)) {
     // fn does not complete within 10 seconds
