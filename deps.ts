@@ -2,4 +2,4 @@
 export {
   deferred,
   delay as denoDelay,
-} from "https://deno.land/std@0.81.0/async/mod.ts";
+} from "https://deno.land/std@0.82.0/async/mod.ts";
