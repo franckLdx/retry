@@ -5,6 +5,7 @@ Can re-call a function until a sucess, or bind a timeout to a function
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/retry) 
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/franckLdx/retry/blob/master/LICENSE) 
 
+
 ## How to:
 * to retry something: 
   ```typescript
