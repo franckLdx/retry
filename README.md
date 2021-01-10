@@ -126,6 +126,12 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
 * `setDefaultRetryOptions<T>(retryOptions<T>: RetryOptions)`: change the default retryOptions, or only the default maxTry or only the default delay). It always returns the full default retryOptions.
 * `getDefaultRetryOptions<T>()`: returns the current default retry options.
 * `retryAsyncDecorator<T>(fn: T, retryOptions?: RetryOptions<T>)` and  `retryDecorator<T>(fn: T, retryOptions<T>?: RetryOptions)`: decorators that return a function with same signature than the given function. On decorated call, fn is called repeteadly it does not throw an exception or until retryOptions.maxTry.
+* `TooManyTries`: an error thrown by retry functions when `until` returns false after `maxTry` calls. It comes with a type guard: 
+```typescript
+  if (isTooManyTries(error)) {
+    // fn does not complete within 10 seconds
+  }
+````
 ### Wait familly
 * `waitUntil<T>(fn<T>, duration?, error?)`: waitUntil call asynchronously fn once. If fn complete within the duration (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
 * `waitUntilAsync<T>(fn<T>, duration?, error?)`: same as waitUntil, except fn is an asynchronous function.
