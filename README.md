@@ -7,7 +7,7 @@ Can re-call a function until a sucess, or bind a timeout to a function
 
 
 ---
-__Breaking change__: For those who are using 1.x in __typescript__, you may have to add a type to RetryOptions if you want to use
+__Breaking change__: For those who are using 0.x in __typescript__, you may have to add a type to RetryOptions if you want to use
 the new `until`function. This type is the called function returns type.
 
 ---
