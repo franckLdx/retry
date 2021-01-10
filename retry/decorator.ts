@@ -6,7 +6,7 @@ export function retryAsyncDecorator<
   T extends (...args: any[]) => Promise<any>,
 >(
   fn: T,
-  retryOptions?: RetryOptions,
+  retryOptions?: RetryOptions<T>,
 ) {
   return (...args: Parameters<T>): ReturnType<T> => {
     const wrappedFn = () => fn(...args);
@@ -19,7 +19,7 @@ export function retryDecorator<
   T extends (...args: any[]) => any,
 >(
   fn: T,
-  retryOptions?: RetryOptions,
+  retryOptions?: RetryOptions<T>,
 ) {
   return (...args: Parameters<T>): Promise<ReturnType<T>> => {
     const wrappedFn = () => fn(...args);

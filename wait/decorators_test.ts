@@ -1,8 +1,8 @@
 import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { waitUntilAsyncDecorator, waitUntilDecorator } from "./decorators.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
-import { TimeoutError } from "./wait.ts";
 import { denoDelay } from "../deps.ts";
+import { TimeoutError } from "./timeoutError.ts";
 
 Deno.test({
   name: "waitUntilAsyncDecorator should execute the function",

@@ -1,8 +1,13 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { denoDelay } from "../deps.ts";
-import { asyncDecorator } from "../misc.ts";
-import { defaultRetryOptions, RetryOptions } from "./options.ts";
+import { assertDefined, asyncDecorator } from "../misc.ts";
+import {
+  defaultRetryOptions,
+  getDefaultRetryOptions,
+  RetryOptions,
+} from "./options.ts";
+import { isTooManyTries, TooManyTries } from "./tooManyTries.ts";
 
 /** 
  * Retry a function until it does not throw an exception.
@@ -12,7 +17,7 @@ import { defaultRetryOptions, RetryOptions } from "./options.ts";
  */
 export function retry<T>(
   fn: () => T,
-  retryOptions?: RetryOptions,
+  retryOptions?: RetryOptions<T>,
 ): Promise<T> {
   const fnAsync = asyncDecorator(fn);
   return retryAsync(fnAsync, retryOptions);
@@ -26,15 +31,34 @@ export function retry<T>(
  */
 export async function retryAsync<T>(
   fn: () => Promise<T>,
-  { maxTry, delay }: RetryOptions = defaultRetryOptions,
+  retryOptions?: RetryOptions<T>,
 ): Promise<T> {
+  const { maxTry, delay, until } = {
+    ...getDefaultRetryOptions(),
+    ...retryOptions,
+  };
+  assertDefined(maxTry, `maxTry must be defined`);
+  assertDefined(delay, `delay must be defined`);
+  const canRecall = () => maxTry! > 1;
+  const recall = async () => {
+    await denoDelay(delay!);
+    return await retryAsync(fn, { delay, maxTry: maxTry! - 1, until });
+  };
   try {
-    return await fn();
-  } catch (err) {
-    if (maxTry > 1) {
-      await denoDelay(delay);
-      return await retryAsync(fn, { delay: delay, maxTry: maxTry - 1 });
+    const result = await fn();
+    const done = until ? until(result) : true;
+    if (done) {
+      return result;
+    } else if (canRecall()) {
+      return await recall();
+    } else {
+      throw new TooManyTries();
     }
-    throw err;
+  } catch (err) {
+    if (!isTooManyTries(err) && canRecall()) {
+      return await recall();
+    } else {
+      throw err;
+    }
   }
 }

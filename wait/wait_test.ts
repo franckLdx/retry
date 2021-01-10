@@ -1,11 +1,7 @@
 import { deferred, denoDelay } from "../deps.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
-import {
-  isTimeoutError,
-  TimeoutError,
-  waitUntil,
-  waitUntilAsync,
-} from "./wait.ts";
+import { isTimeoutError, TimeoutError } from "./timeoutError.ts";
+import { waitUntil, waitUntilAsync } from "./wait.ts";
 
 Deno.test({
   name: "waitAsync return function return code",

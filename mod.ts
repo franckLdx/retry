@@ -5,15 +5,12 @@ export {
   getDefaultRetryOptions,
   setDefaultRetryOptions,
 } from "./retry/options.ts";
+export { isTooManyTries, TooManyTries } from "./retry/tooManyTries.ts";
 export type { RetryOptions } from "./retry/options.ts";
 export { retryAsyncDecorator, retryDecorator } from "./retry/decorator.ts";
 
-export {
-  isTimeoutError,
-  TimeoutError,
-  waitUntil,
-  waitUntilAsync,
-} from "./wait/wait.ts";
+export { waitUntil, waitUntilAsync } from "./wait/wait.ts";
+export { isTimeoutError, TimeoutError } from "./wait/timeoutError.ts";
 export { getDefaultDuration, setDefaultDuration } from "./wait/options.ts";
 export {
   waitUntilAsyncDecorator,
