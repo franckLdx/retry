@@ -6,24 +6,62 @@ Can re-call a function until a sucess, or bind a timeout to a function
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/franckLdx/retry/blob/master/LICENSE) 
 
 
+---
+__Breaking change__: For those who are using 1.x in __typescript__, you may have to add a type to RetryOptions if you want to use
+the new `until`function. This type is the called function returns type.
+
+---
+
+
 ## How to:
 * to retry something: 
   ```typescript
-  const result = await retry(()=> {/* do something */}, {delay:100,maxTry:5})
+  const result = await retry(
+    ()=> {/* do something */}, 
+    { delay:100, maxTry:5 }
+  );
   ```
 * to retry something async : 
   ```typescript
-  const result = await retryAsync(async ()=> {/* do something */}, {delay:100,maxTry:5})
+  const result = await retryAsync(
+    async ()=> {/* do something */}, 
+    { delay:100, maxTry:5 }
+  )
+  ```
+* to retry until the answer is 42 : 
+  ```typescript
+  try {
+    await retryAsync(
+      async (): Promise<number> => {/* do something */}, 
+      { 
+        delay:100, 
+        maxTry:5, 
+        until: (lastResult: number) => lastResult === 42 
+      }
+    );
+  } catch (err) {
+    if (isTooManyTries(err)) {
+      // Did not get 42 after 'maxTry' calls
+    } else {
+      // something else goes wrong 
+    }
+  }
   ```
 * Need to call a function at multiple place with same retryOptions ? Use decorators:
   ```typescript
   const fn = (title: string, count:number) => return `${count}. ${title}`; 
-  const decoratedFn = retryDecorator(fn, { delay:100, maxTry:5 });
+  const decoratedFn = retryDecorator(
+    fn, 
+    { delay:100, maxTry:5 }
+  );
   const title1 = await decoratedFn("Intro", 1);
   const title2 = await decoratedFn("A chapter", 2);
 
   const fn = async (name: string): Promise<any> => { /* something async */ }; 
-  const decoratedFn = retryAsyncDecorator(fn, {delay:100,maxTry:5});
+  const decoratedFn = retryAsyncDecorator(
+    fn, 
+    { delay:100, maxTry:5 }
+  );
   const result1 = await decoratedFn("John");
   const result2 = await decoratedFn("Doe");
   ```
@@ -54,12 +92,18 @@ Can re-call a function until a sucess, or bind a timeout to a function
 * Need to call a function at multiple place with same durations ? Use decorators:
   ```typescript
   const fn = (title: string, count:number) => /* a long task */; 
-  const decoratedFn = waitUntilDecorator(fn, { delay:100, maxTry:5 });
+  const decoratedFn = waitUntilDecorator(
+    fn, 
+    { delay:100, maxTry:5 }
+  );
   const title1 = await decoratedFn("Intro", 1);
   const title2 = await decoratedFn("A chapter", 2);
 
   const fn = async (name: string): Promise<any> => { /* a long task */ }; 
-  const decoratedFn = waitUntilAsyncDecorator(fn, {delay:100,maxTry:5});
+  const decoratedFn = waitUntilAsyncDecorator(
+    fn, 
+    { delay:100, maxTry:5 }
+  );
   const result1 = await decoratedFn("John");
   const result2 = await decoratedFn("Doe");
   ```
@@ -69,17 +113,19 @@ ___
 * `retry<T>(fn<T>, retryOptions?)`: call repeteadly fn until fn does not throw an exception. Stop after retryOptions.maxTry count. Between each call wait retryOptions.delay milliseconds.
 if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise returns fn return value.
 * `retryAsync<T>(fn<T>, retryOptions?)`: same as retry, except fn is an asynchronous function.
-* `retryOptions`:
-  - maxTry maximum calls to fn.
-  - delay: delay between each call (in milliseconds).
-  When retryOptions is not provided, the default one is applyed. The default retry option is
-  ```typescript
+* `retryOptions<T>`:
+  - maxTry [optional] maximum calls to fn.
+  - delay: [optional] delay between each call (in milliseconds).
+  - until: [optional] (lastResult) => boolean: return false if last fn results is not the expected one: continue to call fn until `until` returns true. A `TooManyTries` is thrown after `maxTry` calls to fn;
+  When any option is not provided, the default one is applyed. The default options are:
+  ```
     delay: 250,  // call fn every 250 ms during one minute 
     maxTry: 4 * 60, 
+    until: null
   ```
-* `setDefaultRetryOptions(retryOptions: Partial<RetryOptions>)`: change the default retryOptions, or only the default maxTry or only the default delay). It always returns the full default retryOptions.
-* `getDefaultRetryOptions()`: returns the current default retry options.
-* `retryAsyncDecorator(fn: T, retryOptions?: RetryOptions)` and  `retryDecorator(fn: T, retryOptions?: RetryOptions)`: decorators that return a function with same signature than the given function. On decorated call, fn is called repeteadly it does not throw an exception or until retryOptions.maxTry.
+* `setDefaultRetryOptions<T>(retryOptions<T>: RetryOptions)`: change the default retryOptions, or only the default maxTry or only the default delay). It always returns the full default retryOptions.
+* `getDefaultRetryOptions<T>()`: returns the current default retry options.
+* `retryAsyncDecorator<T>(fn: T, retryOptions?: RetryOptions<T>)` and  `retryDecorator<T>(fn: T, retryOptions<T>?: RetryOptions)`: decorators that return a function with same signature than the given function. On decorated call, fn is called repeteadly it does not throw an exception or until retryOptions.maxTry.
 ### Wait familly
 * `waitUntil<T>(fn<T>, duration?, error?)`: waitUntil call asynchronously fn once. If fn complete within the duration (express in miliseconds), waitUntil returns the fn result. Otherwhise it thows the given error (if any) or a TimeoutError exception.
 * `waitUntilAsync<T>(fn<T>, duration?, error?)`: same as waitUntil, except fn is an asynchronous function.
