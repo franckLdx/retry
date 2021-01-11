@@ -204,6 +204,7 @@ retryAsyncUntilDefinedDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
 `RetryUtilsOptions` type is: 
   - maxTry [optional] maximum calls to fn.
   - delay: [optional] delay between each call (in milliseconds).
+
 When not provided, maxTry and delay of global options are applied.  
 
 
