@@ -163,7 +163,7 @@ In case of timeout fn is still executing. It is advise to add a mean to abort it
 * `setDefaultDuration(duration: number)`: change the default duration.
 * `getDefaultDuration()`: returns the current default duration.
 * `waitUntilAsyncDecorator(fn: T, duration?: number, error?: Error)` and `waitUntilDecorator(fn: T, duration?: number, error?: Error)`: decorators that return a function with same signature than the given function. On decorated call, fn is called bounded to the duration.
-## Utils
+## Utils familly
 `retry` comes with handy utilities function for common use case:
 
 __UntilDefined :__
