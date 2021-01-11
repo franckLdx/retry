@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { RetryUtilsOptions } from "./options.ts";
 import { retry, retryAsync } from "../retry.ts";
 
@@ -36,7 +37,7 @@ export async function retryAsyncUntilDefined<RETURN_TYPE>(
   return result!;
 }
 
-export function retryUntilDefinedAsyncDecorator<
+export function retryAsyncUntilDefinedDecorator<
   // deno-lint-ignore no-explicit-any
   PARAMETERS_TYPE extends any[],
   RETURN_TYPE,

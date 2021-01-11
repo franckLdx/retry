@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 export class TooManyTries extends Error {
   constructor() {
     super("function did not complete within allowed number of attempts");

@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { retryAsyncDecorator, retryDecorator } from "./decorator.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";

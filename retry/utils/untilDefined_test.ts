@@ -1,8 +1,16 @@
-import { retryAsyncUntilDefined, retryUntilDefined } from "./untilDefined.ts";
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
+import {
+  retryAsyncUntilDefined,
+  retryAsyncUntilDefinedDecorator,
+  retryUntilDefined,
+  retryUntilDefinedDecorator,
+} from "./untilDefined.ts";
 import { assertEquals, assertThrowsAsync } from "../../dev_deps.ts";
 import { TooManyTries } from "../tooManyTries.ts";
 import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { RetryUtilsOptions } from "./options.ts";
+
+// ----- Sync
 
 Deno.test({
   name: "retryUtil: Should return immediatly",
@@ -13,7 +21,7 @@ Deno.test({
       callCount++;
       return expectedResult;
     };
-    const actualResult = await retryUntilDefined(() => f());
+    const actualResult = await retryUntilDefined(f);
     assertEquals(actualResult, expectedResult);
     assertEquals(callCount, 1);
   },
@@ -33,7 +41,7 @@ Deno.test({
       }
       return expectedResult;
     };
-    const actualResult = await retryUntilDefined(() => f());
+    const actualResult = await retryUntilDefined(f);
     assertEquals(actualResult, expectedResult);
     assertEquals(callCount, 3);
   },
@@ -78,6 +86,89 @@ Deno.test({
   },
 });
 
+// ----- Decorator Sync
+Deno.test({
+  name: "retryUtilDecorator: Should return immediatly",
+  fn: async () => {
+    const expectedResult = "hello";
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      return expectedResult;
+    };
+    const decorated = retryUntilDefinedDecorator(f);
+    const actualResult = await decorated();
+    assertEquals(actualResult, expectedResult);
+    assertEquals(callCount, 1);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should return after first defined result",
+  fn: async () => {
+    const expectedResult = "hello";
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      if (callCount === 1) {
+        return undefined;
+      } else if (callCount === 2) {
+        return null;
+      }
+      return expectedResult;
+    };
+    const decorated = retryUntilDefinedDecorator(f);
+    const actualResult = await decorated();
+    assertEquals(actualResult, expectedResult);
+    assertEquals(callCount, 3);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should throw a TooManyTries",
+  fn: async () => {
+    const maxTry = 4;
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      return callCount % 2 === 0 ? undefined : null;
+    };
+    const decorated = retryUntilDefinedDecorator(
+      f,
+      { maxTry },
+    );
+    await assertThrowsAsync(
+      decorated,
+      TooManyTries,
+    );
+    assertEquals(callCount, maxTry);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should failed",
+  fn: async () => {
+    const expectedErrorMsg = "BOOM";
+    const retryOptions: RetryUtilsOptions = {
+      maxTry: 3,
+      delay: 10,
+    };
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      throw new Error(expectedErrorMsg);
+    };
+    const decorated = retryUntilDefinedDecorator(f, retryOptions);
+    await assertThrowsAsync(
+      decorated,
+      Error,
+      expectedErrorMsg,
+    );
+    assertEquals(callCount, retryOptions.maxTry);
+  },
+});
+
+// --- Async
 Deno.test({
   name: "retryAsyncUtil: Should return immediatly",
   fn: async () => {
@@ -89,7 +180,7 @@ Deno.test({
       setTimeout(() => p.resolve(expectedResult), 100);
       return p;
     };
-    const actualResult = await retryAsyncUntilDefined(() => f());
+    const actualResult = await retryAsyncUntilDefined(f);
     assertEquals(actualResult, expectedResult);
     assertEquals(callCount, 1);
   },
@@ -117,7 +208,7 @@ Deno.test({
       );
       return p;
     };
-    const actualResult = await retryAsyncUntilDefined(() => f());
+    const actualResult = await retryAsyncUntilDefined(f);
     assertEquals(actualResult, expectedResult);
     assertEquals(callCount, 3);
   },
@@ -162,6 +253,117 @@ Deno.test({
     };
     await assertThrowsAsync(
       () => retryAsyncUntilDefined(f, retryOptions),
+      Error,
+      expectedErrorMsg,
+    );
+    assertEquals(callCount, retryOptions.maxTry);
+  },
+});
+
+// ----- Decorator ASync
+Deno.test({
+  name: "retryUtilDecorator: Should return immediatly",
+  fn: async () => {
+    const expectedResult = "hello";
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      const p = deferred<string>();
+      setTimeout(
+        () => p.resolve(expectedResult),
+        10,
+      );
+      return p;
+    };
+    const decorated = retryAsyncUntilDefinedDecorator(f);
+    const actualResult = await decorated();
+    assertEquals(actualResult, expectedResult);
+    assertEquals(callCount, 1);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should return after first defined result",
+  fn: async () => {
+    const expectedResult = "hello";
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      const p = deferred<string | null | undefined>();
+      setTimeout(
+        () => {
+          if (callCount === 1) {
+            p.resolve(undefined);
+          } else if (callCount === 2) {
+            p.resolve(null);
+          } else {
+            p.resolve(expectedResult);
+          }
+        },
+        10,
+      );
+      return p;
+    };
+    const decorated = retryAsyncUntilDefinedDecorator(f);
+    const actualResult = await decorated();
+    assertEquals(actualResult, expectedResult);
+    assertEquals(callCount, 3);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should throw a TooManyTries",
+  fn: async () => {
+    const maxTry = 4;
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      const p = deferred<undefined | null>();
+      setTimeout(
+        () => {
+          if (callCount % 2 === 0) {
+            p.resolve(undefined);
+          } else {
+            p.resolve(null);
+          }
+        },
+        10,
+      );
+      return p;
+    };
+    const decorated = retryUntilDefinedDecorator(
+      f,
+      { maxTry },
+    );
+    await assertThrowsAsync(
+      decorated,
+      TooManyTries,
+    );
+    assertEquals(callCount, maxTry);
+  },
+});
+
+Deno.test({
+  name: "retryUtilDecorator: Should failed",
+  fn: async () => {
+    const expectedErrorMsg = "BOOM";
+    const retryOptions: RetryUtilsOptions = {
+      maxTry: 3,
+      delay: 10,
+    };
+    let callCount = 0;
+    const f = () => {
+      callCount++;
+      const p = deferred();
+      setTimeout(
+        () => p.reject(new Error(expectedErrorMsg)),
+        10,
+      );
+      return p;
+    };
+    const decorated = retryUntilDefinedDecorator(f, retryOptions);
+    await assertThrowsAsync(
+      decorated,
       Error,
       expectedErrorMsg,
     );

@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { deferred, denoDelay } from "../deps.ts";
 import { assertEquals, assertThrowsAsync } from "../dev_deps.ts";
 import { isTimeoutError, TimeoutError } from "./timeoutError.ts";

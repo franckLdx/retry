@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { getDefaultDuration, setDefaultDuration } from "./options.ts";
 import { assertEquals } from "../dev_deps.ts";
 

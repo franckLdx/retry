@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { retry, retryAsync } from "./retry.ts";
 import { RetryOptions } from "./options.ts";
 

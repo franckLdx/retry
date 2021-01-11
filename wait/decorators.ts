@@ -1,3 +1,4 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { waitUntil, waitUntilAsync } from "./wait.ts";
 
 /** a waitUntilAsync decorator 

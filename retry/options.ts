@@ -1,3 +1,5 @@
+// Copyright since 2020, FranckLdx. All rights reserved. MIT license.
+
 /** 
  * Retry options:
  *  - maxTry: maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown 
