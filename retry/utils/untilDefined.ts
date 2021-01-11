@@ -2,8 +2,9 @@
 import { RetryUtilsOptions } from "./options.ts";
 import { retry, retryAsync } from "../retry.ts";
 
-const until = <RETURN_TYPE>(lastResult: RETURN_TYPE | undefined | null) =>
-  lastResult !== undefined && lastResult !== null;
+const until = <RETURN_TYPE>(
+  lastResult: RETURN_TYPE | undefined | null,
+): boolean => lastResult !== undefined && lastResult !== null;
 
 export async function retryUntilDefined<RETURN_TYPE>(
   fn: () => RETURN_TYPE | undefined | null,
