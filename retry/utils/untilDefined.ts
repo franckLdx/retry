@@ -20,7 +20,7 @@ export function retryUntilDefinedDecorator<
 >(
   fn: (...args: PARAMETERS_TYPE) => RETURN_TYPE | undefined | null,
   retryOptions?: RetryUtilsOptions,
-) {
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE> {
   return (
     ...args: PARAMETERS_TYPE
   ): Promise<RETURN_TYPE> => {
@@ -44,7 +44,7 @@ export function retryAsyncUntilDefinedDecorator<
 >(
   fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE | undefined | null>,
   retryOptions?: RetryUtilsOptions,
-) {
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE> {
   return (
     ...args: PARAMETERS_TYPE
   ): Promise<RETURN_TYPE> => {

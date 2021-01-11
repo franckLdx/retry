@@ -133,7 +133,7 @@ if stop to call fn after retryOptions.maxTry, throws fn execption, otherwise ret
 * `retryOptions<T>`:
   - maxTry [optional] maximum calls to fn.
   - delay: [optional] delay between each call (in milliseconds).
-  - until: [optional] (lastResult) => boolean: return false if last fn results is not the expected one: continue to call fn until `until` returns true. A `TooManyTries` is thrown after `maxTry` calls to fn;
+  - until: [optional] (lastResult: T) => boolean: return false if last fn results is not the expected one: continue to call fn until `until` returns true. A `TooManyTries` is thrown after `maxTry` calls to fn;
   When any option is not provided, the default one is applyed. The default options are:
   ```
     delay: 250,  // call fn every 250 ms during one minute 
@@ -163,7 +163,51 @@ In case of timeout fn is still executing. It is advise to add a mean to abort it
 * `setDefaultDuration(duration: number)`: change the default duration.
 * `getDefaultDuration()`: returns the current default duration.
 * `waitUntilAsyncDecorator(fn: T, duration?: number, error?: Error)` and `waitUntilDecorator(fn: T, duration?: number, error?: Error)`: decorators that return a function with same signature than the given function. On decorated call, fn is called bounded to the duration.
+## Utils
+`retry` comes with handy utilities function for common use case:
+
+__UntilDefined :__
+To retry until we get a vlaue which is neither null nor undefined.
+
+For calling sync function:
+
+```typescript
+retryUntilDefined<RETURN_TYPE>(
+  fn: () => RETURN_TYPE | undefined | null,
+  retryOptions?: RetryUtilsOptions,
+): Promise<RETURN_TYPE>
+```
+
+```typescript
+retryUntilDefinedDecorator<PARAMETERS_TYPE extends any[], RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => RETURN_TYPE | undefined | null,
+  retryOptions?: RetryUtilsOptions,
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
+```
+
+For calling async function:
+
+```typescript
+retryAsyncUntilDefined<RETURN_TYPE>(
+  fn: () => Promise<RETURN_TYPE | undefined | null>,
+  options?: RetryUtilsOptions,
+): Promise<RETURN_TYPE>
+```
+
+```typescript
+retryAsyncUntilDefinedDecorator<PARAMETERS_TYPE extends any[], RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE | undefined | null>,
+  retryOptions?: RetryUtilsOptions,
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
+```
+
+`RetryUtilsOptions` type is: 
+  - maxTry [optional] maximum calls to fn.
+  - delay: [optional] delay between each call (in milliseconds).
+When not provided, maxTry and delay of global options are applied.  
+
+
 
 ---
 ## Compatilibity
-Use std 0.83.0 (deno 1.6.3) but is is aslo tested with lates deno 1.3.x, 1.4.x and 1.5.x.
+Use std 0.83.0 (deno 1.6.3) and is tested with latest deno 1.3.x, 1.4.x and 1.5.x.
