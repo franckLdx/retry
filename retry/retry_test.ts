@@ -4,7 +4,6 @@ import { retry, retryAsync } from "./retry.ts";
 import { setDefaultRetryOptions } from "./options.ts";
 import type { RetryOptions } from "./options.ts";
 import { isTooManyTries } from "./tooManyTries.ts";
-import { retryAsyncDecorator } from "./decorator.ts";
 
 const defaultRetryOptions = setDefaultRetryOptions({ maxTry: 5, delay: 250 });
 

@@ -16,3 +16,12 @@ export {
   waitUntilAsyncDecorator,
   waitUntilDecorator,
 } from "./wait/decorators.ts";
+
+export {
+  retryAsyncUntilDefined,
+  retryUntilDefined,
+  retryUntilDefinedAsyncDecorator,
+  retryUntilDefinedDecorator,
+} from "./retry/utils/untilDefined.ts";
+
+export type { RetryUtilsOptions } from "./retry/utils/options.ts";
