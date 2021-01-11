@@ -179,7 +179,7 @@ retryUntilDefined<RETURN_TYPE>(
 ```
 
 ```typescript
-retryUntilDefinedDecorator<PARAMETERS_TYPE extends any[], RETURN_TYPE>(
+retryUntilDefinedDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
   fn: (...args: PARAMETERS_TYPE) => RETURN_TYPE | undefined | null,
   retryOptions?: RetryUtilsOptions,
 ): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
@@ -195,7 +195,7 @@ retryAsyncUntilDefined<RETURN_TYPE>(
 ```
 
 ```typescript
-retryAsyncUntilDefinedDecorator<PARAMETERS_TYPE extends any[], RETURN_TYPE>(
+retryAsyncUntilDefinedDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
   fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE | undefined | null>,
   retryOptions?: RetryUtilsOptions,
 ): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
