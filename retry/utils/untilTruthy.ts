@@ -1,6 +1,6 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 import { RetryUtilsOptions } from "./options.ts";
-import { retry } from "../retry.ts";
+import { retry, retryAsync } from "../retry.ts";
 
 const until = <RETURN_TYPE>(lastResult: RETURN_TYPE): boolean =>
   // deno-lint-ignore no-explicit-any
@@ -29,4 +29,15 @@ export function retryUntilTruthyDecorator<
     const wrappedFn = () => fn(...args);
     return retryUntilTruthy(wrappedFn, retryOptions);
   };
+}
+
+export async function retryAsyncUntilTruthy<
+  // deno-lint-ignore no-explicit-any
+  PARAMETERS_TYPE extends any[],
+  RETURN_TYPE,
+>(
+  fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>,
+  retryOptions?: RetryUtilsOptions,
+): Promise<RETURN_TYPE> {
+  return await retryAsync(fn, { ...retryOptions, until });
 }
