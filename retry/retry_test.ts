@@ -4,7 +4,7 @@ import { assert, assertEquals, assertThrowsAsync } from "../dev_deps.ts";
 import { retry, retryAsync } from "./retry.ts";
 import { setDefaultRetryOptions } from "./options.ts";
 import type { RetryOptions } from "./options.ts";
-import { isTooManyTries } from "./tooManyTries.ts";
+import { TooManyTries } from "./tooManyTries.ts";
 
 const defaultRetryOptions = setDefaultRetryOptions({ maxTry: 5, delay: 250 });
 
@@ -216,12 +216,10 @@ Deno.test({
       untilCallCount++;
       return lastResult !== expectedResult;
     };
-    try {
-      await retry(cb, { maxTry, until });
-      throw new Error("Should have thrown an exception");
-    } catch (err) {
-      assertEquals(isTooManyTries(err), true);
-    }
+    await assertThrowsAsync(
+      () => retry(cb, { maxTry, until }),
+      TooManyTries,
+    );
     assertEquals(cbCallCount, maxTry, "cb called too many times");
     assertEquals(untilCallCount, maxTry, "until called too many times");
   },

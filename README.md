@@ -108,6 +108,23 @@ the new `until`function. This type is the called function returns type.
   const result2 = await decoratedFn("Doe");
   ```
 ___
+## Utils
+`retry` comes with handy utilities function for common use case:
+* to retry until a function returns something defined (aka not null neither not undefined):
+```typescript
+  // in all cases results is a string and cannot be null or undefined
+  const result = await retryUntilDefined( (): string|undefined => { ... } ) );
+  
+  const result = await retryUntilAsyncDefined( (): Promise<string|null> => { ... } );
+  
+  const decorated = retryUntilDefinedDecorator( (p1: string): string|undefined => { ... } );
+  const result = await decorated('hello world');
+  
+  const decorated = retryAsyncUntilDefinedDecorator( (p1: string): Promise<string|undefined> => { ... } );
+  const result = await decorated('hello world');
+```
+
+___
 ## API
 ### Retry familly
 * `retry<T>(fn<T>, retryOptions?)`: call repeteadly fn until fn does not throw an exception. Stop after retryOptions.maxTry count. Between each call wait retryOptions.delay milliseconds.
@@ -149,4 +166,4 @@ In case of timeout fn is still executing. It is advise to add a mean to abort it
 
 ---
 ## Compatilibity
-Use std 0.81.0 (deno 1.6.1) but is is aslo tested with lates deno 1.3.x, 1.4.x and 1.5.x.
+Use std 0.83.0 (deno 1.6.3) but is is aslo tested with lates deno 1.3.x, 1.4.x and 1.5.x.
