@@ -124,6 +124,20 @@ ___
   const result = await decorated('hello world');
 ```
 
+* to retry until a function returns something truthy:
+```typescript
+  // in all cases results is a string and cannot be null or undefined
+  const result = await retryUntilTruthy( (): boolean|undefined => { ... } ) );
+  
+  const result = await retryAsyncUntilTruthy( (): Promise<number|null> => { ... } );
+  
+  const decorated = retryUntilTruthyDecorator( (p1: string): boolean|undefined => { ... } );
+  const result = await decorated('hello world');
+  
+  const decorated = retryAsyncUntilTruthyDecorator( (p1: string): Promise<boolean|null> => { ... } );
+  const result = await decorated('hello world');
+```
+
 ___
 ## API
 ### Retry familly
@@ -167,7 +181,7 @@ In case of timeout fn is still executing. It is advise to add a mean to abort it
 `retry` comes with handy utilities function for common use case:
 
 __UntilDefined :__
-To retry until we get a vlaue which is neither null nor undefined.
+To retry until we get a value which is neither null nor undefined.
 
 For calling sync function:
 
@@ -200,6 +214,42 @@ retryAsyncUntilDefinedDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
   retryOptions?: RetryUtilsOptions,
 ): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
 ```
+
+__UntilTruthy :__
+To retry until we get a value which javascript consider as truthy.
+
+For calling sync function:
+
+```typescript
+retryUntilTruthy<PARAMETERS_TYPE, RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => RETURN_TYPE,
+  retryOptions?: RetryUtilsOptions,
+): Promise<RETURN_TYPE>
+```
+
+```typescript
+retryUntilTruthyDecorator<PARAMETERS_TYPE,  RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => RETURN_TYPE,
+  retryOptions?: RetryUtilsOptions,
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
+```
+
+For calling async function:
+
+```typescript
+retryAsyncUntilTruthy<PARAMETERS_TYPE, RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>,
+  retryOptions?: RetryUtilsOptions,
+): Promise<RETURN_TYPE>
+```
+
+```typescript
+retryAsyncUntilTruthyDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
+  fn: (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>,
+  retryOptions?: RetryUtilsOptions,
+): (...args: PARAMETERS_TYPE) => Promise<RETURN_TYPE>
+```
+
 
 `RetryUtilsOptions` type is: 
   - maxTry [optional] maximum calls to fn.
