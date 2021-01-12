@@ -19,9 +19,16 @@ export {
 
 export {
   retryAsyncUntilDefined,
+  retryAsyncUntilDefinedDecorator,
   retryUntilDefined,
-  retryUntilDefinedAsyncDecorator,
   retryUntilDefinedDecorator,
 } from "./retry/utils/untilDefined.ts";
+
+export {
+  retryAsyncUntilTruthy,
+  retryAsyncUntilTruthyDecorator,
+  retryUntilTruthy,
+  retryUntilTruthyDecorator,
+} from "./retry/utils/untilTruthy.ts";
 
 export type { RetryUtilsOptions } from "./retry/utils/options.ts";
