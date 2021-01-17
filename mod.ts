@@ -21,12 +21,12 @@ export {
 export {
   retryAsyncUntilDefined,
   retryUntilDefined,
-} from "./retry/utils/untrilDefined/retry.ts";
+} from "./retry/utils/untilDefined/retry.ts";
 
 export {
   retryAsyncUntilDefinedDecorator,
   retryUntilDefinedDecorator,
-} from "./retry/utils/untrilDefined/decorators.ts";
+} from "./retry/utils/untilDefined/decorators.ts";
 
 export {
   retryAsyncUntilTruthy,
