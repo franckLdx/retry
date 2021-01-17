@@ -1,15 +1,18 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
 
+/** type of the unil function */
+export type UNTIL<RETURN_TYPE> = (lastResult: RETURN_TYPE) => boolean;
+
 /** 
  * Retry options:
  *  - maxTry: maximum number of attempts. if fn is still throwing execption afect maxtry attempts, an exepction is thrown 
  *  - delay: number of miliseconds between each attempt.
  *  - until: if given, the function will be call until this function returns tru or until maxTry calls. 
  */
-export interface RetryOptions<T> {
+export interface RetryOptions<RETURN_TYPE> {
   maxTry?: number;
   delay?: number;
-  until?: ((lastResult: T) => boolean) | null;
+  until?: UNTIL<RETURN_TYPE> | null;
 }
 
 // deno-lint-ignore no-explicit-any

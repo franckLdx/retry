@@ -11,13 +11,13 @@ import { TimeoutError } from "./timeoutError.ts";
  * @param duration timeout in milliseconds
  * @param [error] custom error to throw when fn duration exceeded duration. If not provided a TimeoutError is thrown.
  */
-export async function waitUntilAsync<T>(
-  fn: () => Promise<T>,
+export async function waitUntilAsync<RETURN_TYPE>(
+  fn: () => Promise<RETURN_TYPE>,
   duration: number = defaultDuration,
   error: Error = new TimeoutError(
     "function did not complete within allowed time",
   ),
-): Promise<T> {
+): Promise<RETURN_TYPE> {
   const canary = Symbol("RETRY_LIB_FN_EXPIRED");
   const result = await Promise.race([
     fn(),
@@ -26,7 +26,7 @@ export async function waitUntilAsync<T>(
   if (result === canary) {
     throw error;
   }
-  return result as T;
+  return result as RETURN_TYPE;
 }
 
 /** 

@@ -1,5 +1,4 @@
 // Copyright since 2020, FranckLdx. All rights reserved. MIT license.
-import { deferred } from "https://deno.land/std@0.81.0/async/deferred.ts";
 import { denoDelay } from "../deps.ts";
 import { assertDefined, asyncDecorator } from "../misc.ts";
 import {
@@ -15,10 +14,10 @@ import { isTooManyTries, TooManyTries } from "./tooManyTries.ts";
  * @param fn the function to execute
  * @param retryOptions retry options
  */
-export function retry<T>(
-  fn: () => T,
-  retryOptions?: RetryOptions<T>,
-): Promise<T> {
+export function retry<RETURN_TYPE>(
+  fn: () => RETURN_TYPE,
+  retryOptions?: RetryOptions<RETURN_TYPE>,
+): Promise<RETURN_TYPE> {
   const fnAsync = asyncDecorator(fn);
   return retryAsync(fnAsync, retryOptions);
 }

@@ -4,26 +4,28 @@ import { RetryOptions } from "./options.ts";
 
 export function retryAsyncDecorator<
   // deno-lint-ignore no-explicit-any
-  T extends (...args: any[]) => Promise<any>,
+  RETURN_TYPE extends (...args: any[]) => Promise<any>,
 >(
-  fn: T,
-  retryOptions?: RetryOptions<T>,
+  fn: RETURN_TYPE,
+  retryOptions?: RetryOptions<RETURN_TYPE>,
 ) {
-  return (...args: Parameters<T>): ReturnType<T> => {
+  return (...args: Parameters<RETURN_TYPE>): ReturnType<RETURN_TYPE> => {
     const wrappedFn = () => fn(...args);
-    return retryAsync(wrappedFn, retryOptions) as ReturnType<T>;
+    return retryAsync(wrappedFn, retryOptions) as ReturnType<RETURN_TYPE>;
   };
 }
 
 export function retryDecorator<
   // deno-lint-ignore no-explicit-any
-  T extends (...args: any[]) => any,
+  RETURN_TYPE extends (...args: any[]) => any,
 >(
-  fn: T,
-  retryOptions?: RetryOptions<T>,
+  fn: RETURN_TYPE,
+  retryOptions?: RetryOptions<RETURN_TYPE>,
 ) {
-  return (...args: Parameters<T>): Promise<ReturnType<T>> => {
+  return (
+    ...args: Parameters<RETURN_TYPE>
+  ): Promise<ReturnType<RETURN_TYPE>> => {
     const wrappedFn = () => fn(...args);
-    return retry(wrappedFn, retryOptions) as Promise<ReturnType<T>>;
+    return retry(wrappedFn, retryOptions) as Promise<ReturnType<RETURN_TYPE>>;
   };
 }

@@ -130,7 +130,6 @@ ___
   const result = await retryUntilTruthy( (): boolean|undefined => { ... } ) );
   
   const result = await retryAsyncUntilTruthy( (): Promise<number|null> => { ... } );
-  
   const decorated = retryUntilTruthyDecorator( (p1: string): boolean|undefined => { ... } );
   const result = await decorated('hello world');
   
@@ -256,6 +255,7 @@ retryAsyncUntilTruthyDecorator<PARAMETERS_TYPE, RETURN_TYPE>(
   - delay: [optional] delay between each call (in milliseconds).
 
 When not provided, maxTry and delay of global options are applied.  
+
 
 
 
