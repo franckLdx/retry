@@ -30,9 +30,12 @@ export {
 
 export {
   retryAsyncUntilTruthy,
-  retryAsyncUntilTruthyDecorator,
   retryUntilTruthy,
+} from "./retry/utils/untilTruthy/retry.ts";
+
+export {
+  retryAsyncUntilTruthyDecorator,
   retryUntilTruthyDecorator,
-} from "./retry/utils/untilTruthy/untilTruthy.ts";
+} from "./retry/utils/untilTruthy/decorators.ts";
 
 export type { RetryUtilsOptions } from "./retry/utils/options.ts";
