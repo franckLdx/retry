@@ -1,0 +1,1 @@
+{"scriptId":"20","url":"deno:op_crates/fetch/01_fetch_util.js","functions":[{"functionName":"requiredArguments","ranges":[{"startOffset":107,"endOffset":393,"count":8},{"startOffset":204,"endOffset":389,"count":0}],"isBlockCoverage":true}]}

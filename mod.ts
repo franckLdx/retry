@@ -39,3 +39,12 @@ export {
 } from "./retry/utils/untilTruthy/decorators.ts";
 
 export type { RetryUtilsOptions } from "./retry/utils/options.ts";
+
+export {
+  retryAsyncUntilResponse,
+} from "./retry/utils/untilResponse/retry.ts";
+
+export {
+  retryAsyncUntilResponseDecorator,
+} from "./retry/utils/untilResponse/decorators.ts";
+

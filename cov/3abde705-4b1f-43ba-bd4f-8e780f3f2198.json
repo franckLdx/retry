@@ -1,0 +1,1 @@
+{"scriptId":"106","url":"https://deno.land/std@0.83.0/async/pool.ts","functions":[{"functionName":"","ranges":[{"startOffset":0,"endOffset":2205,"count":1}],"isBlockCoverage":true},{"functionName":"pooledMap","ranges":[{"startOffset":7,"endOffset":778,"count":0}],"isBlockCoverage":false}]}

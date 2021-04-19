@@ -1,0 +1,1 @@
+{"scriptId":"40","url":"deno:runtime/js/30_metrics.js","functions":[{"functionName":"metrics","ranges":[{"startOffset":141,"endOffset":290,"count":170}],"isBlockCoverage":true}]}
