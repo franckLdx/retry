@@ -261,4 +261,4 @@ When not provided, maxTry and delay of global options are applied.
 
 ---
 ## Compatilibity
-Use std 0.83.0 (deno 1.6.3) and is tested with latest deno 1.3.x, 1.4.x and 1.5.x.
+Use std 0.98.0 (deno 1.11.0) and is tested with latest deno 1.3.x, 1.4.x and 1.5.x.
